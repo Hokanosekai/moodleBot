@@ -1,43 +1,25 @@
-# Typescript DiscordJS template
+# MoodleBot V2
 
-A typescript discord.js bot template using typeorm with mysql
+A typescript discord.js bot to connect to Moodle Mail then send it to Discord
 
 ## How to use this?
 
 1. Clone this repository
-2. After done fill [config.json](./src/config/config.json) with your prefered ids
-3. Update [ormconfig.json](./src/config/ormconfig.json) file with DB ids
-4. Add your bot token in [.env](./.env) file (if you haven't bot token go to the [Discord Developer Portal](https://discord.com/developers/applications) then create a new application)
-5. Start command prompt in project folder
-6. Run `npm install` to install all project dependencies
+2. After done fill [config.json](./src/config/config.json) with your preferred ids
+3. Add your bot token in [.env](./.env) file (if you haven't bot token go to the [Discord Developer Portal](https://discord.com/developers/applications) then create a new application)
+4. Start command prompt in project folder
+5. Run `npm install` to install all project dependencies
 
-<br>
-
-## Project info
-
-All commands are in SlashCommands. So they go through the `interactionCreate` event. You can always add prefixed commands by modifying the code a bit.
-By default there is a `ping` command to show the use of the template.
-
-The template contains a connection to a database with the typeorm and mysql2 packages. If you don't know how to use one of them, don't hesitate to have a look at the documentation.
-
-The connection information is in the `ormconfig.json` file, it allows the connection to a mysql database hosted in localhost. You can also edit the file so that you don't see SQL queries executed by typeorm by setting the `logging: false` property to false. You can also disable automatic entity synchronization (default is on).
-
-You will find in the `utils` folder some utilities.
-
-<br>
+If you want to send only mails from certain sender you can edit the property mails in the mailer instance in [Client.ts L.53](./src/structures/Client.ts?plain=1=L53)
 
 ## Build project
 
-Run commande `npm run build` this will compile typescript in a `dist` folder in project folder.
-
-<br>
+Run command `npm run build` this will compile typescript in a `dist` folder in project folder.
 
 ## Start in dev mode
 
-Edit the `APP_ENV` propertie by `dev` in the [.env](./.env) file. Then run in command prompt `npm run start:dev`.  
+Edit the `APP_ENV` property by `dev` in the [.env](./.env) file. Then run in command prompt `npm run start:dev`.  
 The bot will start and automatically restart if there is a change in your project folder.
-
-<br>
 
 ## Start in live mode
 
@@ -47,11 +29,7 @@ You can also start the bot without compile it by running `npm run start`.
 
 > Note for this command you can replace `node` by `nodemon` to automatically restart bot on dist folder change.
 
-
-<br>
-
-This is a template so you can update, modify it as you want. If you have suggest to upgrade this repository, please do a pull request. 
-
 Hokanosekai#0001
 
-## Thank's for clone it 😜
+## Licence
+MIT
