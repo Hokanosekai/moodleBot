@@ -1,13 +1,19 @@
 {
   "dev": {
     "guild_id": "744192330344431797",
-    "client_id": ""
+    "client_id": "",
+    "channel_id": "817064710389366815"
   },
   "live": {
-    "guild_id": "744192330344431797",
-    "client_id": ""
+    "guild_id": "961222977062584370",
+    "client_id": "",
+    "channel_id": "961222977544933388"
   },
-  "text": {
-
+  "mail": {
+    "user": "arsene.raillard@etudiant.univ-lr.fr",
+    "host": "etudiant.univ-lr.fr",
+    "password": "",
+    "port": 143,
+    "tls": false
   }
 }

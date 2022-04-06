@@ -1,12 +1,12 @@
-import {UserApplication} from "../../structures";
-import {ApplicationCommandTypes} from "discord.js/typings/enums";
+import {Command, UserApplication} from "../../structures";
 import {Logger} from "../../utils";
 
-export default new UserApplication({
+export default new Command({
     name: 'ping',
-    defaultPermission: false,
-    type: 'USER',
+    defaultPermission: true,
+    description: "Ping test",
 
+    options: [],
     permissions: [],
 
     run: async ({client, interaction}) => {

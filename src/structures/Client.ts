@@ -10,25 +10,30 @@ import { promisify } from "util";
 import * as process from "process";
 import ConfigJson from '../config/config.json';
 import {Event} from "./Event";
-import {Logger} from "../utils";
+import {Embeds, Logger} from "../utils";
 import {CommandType, ConfigType} from "../typings";
-import {DataBase} from "../managers";
+import Mailer from "./Mailer";
+
+import TurndownService = require('turndown');
+
+const utf8 = require('utf8')
 
 const globPromise = promisify(glob);
 
 export class ExtendedClient extends Client {
 
-    database: DataBase = new DataBase();
-
     commands: Collection<string, CommandType> = new Collection<string, CommandType>();
+
+    mailer: Mailer;
 
     config: ConfigType = {
         ids: process.env.APP_ENV === 'dev'? ConfigJson.dev : ConfigJson.live,
-        text: ConfigJson.text
+        imap: ConfigJson.mail,
     };
 
     constructor(options: ClientOptions) {
         super(options);
+        this.config.imap.password = process.env.MAIL_PASS
     }
 
     static async importFile(filePath: string) {
@@ -37,14 +42,35 @@ export class ExtendedClient extends Client {
 
     async start() {
 
-        Logger.test(this.config)
-
         await this.registerCommands();
         await this.registerEvents();
 
         this.login(process.env.TOKEN).then(async () => {
+            this.mailer = new Mailer({
+                channelID: this.config.ids.channel_id,
+                imap: this.config.imap,
+                mailbox: "INBOX",
+                mails: ['raillardarsene44@gmail.com', "raillardarsene44t@gmail.com"]
+            })
+            this.mailer.start();
 
-            Logger.test(this.database)
+            this.mailer.on('connected', () => {
+                Logger.success('Connected to mail server');
+            })
+            this.mailer.on('error', Logger.error);
+            this.mailer.on('message', (message) => {
+                let Turndown = new TurndownService();
+                this.mailer.channel.send({
+                    embeds: [
+                        Embeds.DEFAULT_TEMPLATE()
+                            .setColor('BLURPLE')
+                            .setAuthor({name: `FROM ${message.headers.get('from').text} | ${message.headers.get('date')}`})
+                            .setTitle(`${message.headers.get('subject')}`)
+                            .setTimestamp(message.headers.get('x-bm-transport-timestamp'))
+                            .setDescription(Turndown.turndown(message.body.html))
+                    ]
+                });
+            });
         });
     }
 
